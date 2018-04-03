@@ -17,6 +17,7 @@ namespace HPLServices.ApiControlller
         private HPLEntities db = new HPLEntities();
 
         // GET: api/TeamDetails
+        // Get all team details
         public IQueryable<TeamDetail> GetTeamDetails()
         {
             return db.TeamDetails;
