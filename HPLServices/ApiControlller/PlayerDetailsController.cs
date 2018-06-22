@@ -17,10 +17,10 @@ namespace HPLServices.ApiControlller
         private HPLEntities db = new HPLEntities();
 
         // GET: api/PlayerDetails
-        // To Get details of all players.
         public IQueryable<PlayerDetail> GetPlayerDetails()
         {
-            return db.PlayerDetails;
+            return db.PlayerDetails.Where(x=>x.Status ==1).Take(1);
+           // return (from player in db.PlayerDetails where player.Status == 1).Take(1);
         }
 
         // GET: api/PlayerDetails/5
@@ -36,39 +36,91 @@ namespace HPLServices.ApiControlller
             return Ok(playerDetail);
         }
 
-        // PUT: api/PlayerDetails/5
+        //// PUT: api/PlayerDetails/5
+        //[ResponseType(typeof(void))]
+        //public IHttpActionResult PutPlayerDetail(int id, PlayerDetail playerDetail)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    if (id != playerDetail.Id)
+        //    {
+        //        return BadRequest();
+        //    }
+
+        //    db.Entry(playerDetail).State = EntityState.Modified;
+
+        //    try
+        //    {
+        //        db.SaveChanges();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!PlayerDetailExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
+
+        //    return StatusCode(HttpStatusCode.NoContent);
+        //}
+
+        // PUT: api/PutStatusPlayer/5  update status of the employee 
+        
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutPlayerDetail(int id, PlayerDetail playerDetail)
+        [Route("api/PlayerDetails/{employeeID}")]
+        public IHttpActionResult PutStatusPlayer(int employeeID)
         {
+            //PlayerDetail playerDetail = db.PlayerDetails.Find(employeeID);
+            //if (playerDetail == null)
+            //{
+            //    return NotFound();
+            //}
+
+            //db.playerDetail.emp;
+            //db.SaveChanges();
+            //return Ok(playerDetail);           
+
             if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+                return BadRequest("Not a valid model");
 
-            if (id != playerDetail.Id)
+            using (var ctx = new HPLEntities())
             {
-                return BadRequest();
-            }
+                var existingPlayer = ctx.PlayerDetails.Where(s => s.EmployeeId == employeeID)
+                                                        .FirstOrDefault<PlayerDetail>();
 
-            db.Entry(playerDetail).State = EntityState.Modified;
+                if (existingPlayer != null)
+                {
+                    existingPlayer.Status = 0;
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PlayerDetailExists(id))
+                    ctx.SaveChanges();
+                }               
+                else
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+                //var teamPlayerEntry = ctx.TeamDetails.Where(x => x.TeamName.ToUpper() == teamName.ToUpper()).FirstOrDefault<TeamDetail>();
+                //if (teamPlayerEntry != null)
+                //{
+                //    teamPlayerEntry.PlayerCount = teamPlayerEntry.PlayerCount + 1 ;
+
+                //    ctx.SaveChanges();
+                //}
+                //else
+                //{
+                //    return NotFound();
+                //}
+
             }
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok();
+
         }
 
         // POST: api/PlayerDetails

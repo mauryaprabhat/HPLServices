@@ -5,18 +5,30 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="HPLModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="PlayerDetail">
+        <EntityType Name="AuctionDetail">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="TeamName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="BidAmount" Type="int" />
+          <Property Name="NextMaxBid" Type="int" />
+          <Property Name="RemainingAmount" Type="int" />
+        </EntityType>
+        <EntityType Name="PlayerDetails">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Achievement" Type="nvarchar" MaxLength="500" />
           <Property Name="ImageUrl" Type="nvarchar" MaxLength="500" Nullable="false" />
-          <Property Name="TeamId" Type="int" Nullable="false" />
-          <Property Name="Status" Type="int" Nullable="false" />
-          <Property Name="PaidAmount" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" />
         </EntityType>
         <EntityType Name="TeamDetails">
           <Key>
@@ -34,7 +46,8 @@
           <Property Name="TeamLogo" Type="nvarchar" MaxLength="500" Nullable="false" />
         </EntityType>
         <EntityContainer Name="HPLModelStoreContainer">
-          <EntitySet Name="PlayerDetail" EntityType="Self.PlayerDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AuctionDetail" EntityType="Self.AuctionDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlayerDetails" EntityType="Self.PlayerDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TeamDetails" EntityType="Self.TeamDetails" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -58,20 +71,33 @@
         </EntityType>
         <EntityContainer Name="HPLEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="TeamDetails" EntityType="Self.TeamDetail" />
+          <EntitySet Name="AuctionDetails" EntityType="HPLModel.AuctionDetail" />
           <EntitySet Name="PlayerDetails" EntityType="HPLModel.PlayerDetail" />
         </EntityContainer>
+        <EntityType Name="AuctionDetail">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TeamName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="BidAmount" Type="Int32" />
+          <Property Name="NextMaxBid" Type="Int32" />
+          <Property Name="RemainingAmount" Type="Int32" />
+        </EntityType>
         <EntityType Name="PlayerDetail">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Achievement" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="ImageUrl" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="TeamId" Type="Int32" Nullable="false" />
-          <Property Name="Status" Type="Int32" Nullable="false" />
-          <Property Name="PaidAmount" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -95,16 +121,29 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="AuctionDetails">
+            <EntityTypeMapping TypeName="HPLModel.AuctionDetail">
+              <MappingFragment StoreEntitySet="AuctionDetail">
+                <ScalarProperty Name="RemainingAmount" ColumnName="RemainingAmount" />
+                <ScalarProperty Name="NextMaxBid" ColumnName="NextMaxBid" />
+                <ScalarProperty Name="BidAmount" ColumnName="BidAmount" />
+                <ScalarProperty Name="TeamName" ColumnName="TeamName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="PlayerDetails">
             <EntityTypeMapping TypeName="HPLModel.PlayerDetail">
-              <MappingFragment StoreEntitySet="PlayerDetail">
-                <ScalarProperty Name="PaidAmount" ColumnName="PaidAmount" />
+              <MappingFragment StoreEntitySet="PlayerDetails">
                 <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="TeamId" ColumnName="TeamId" />
                 <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="Achievement" ColumnName="Achievement" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

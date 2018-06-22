@@ -6,6 +6,7 @@
     <edmx:Diagrams>
       <Diagram DiagramId="9456e0e0502f4272931ce420ef61f6bd" Name="Diagram1">
         <EntityTypeShape EntityType="HPLModel.TeamDetail" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="HPLModel.AuctionDetail" Width="1.5" PointX="0.75" PointY="4.75" />
         <EntityTypeShape EntityType="HPLModel.PlayerDetail" Width="1.5" PointX="3.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>

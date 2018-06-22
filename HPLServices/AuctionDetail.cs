@@ -12,15 +12,14 @@ namespace HPLServices
     using System;
     using System.Collections.Generic;
     
-    public partial class PlayerDetail
+    public partial class AuctionDetail
     {
         public int Id { get; set; }
-        public int EmployeeId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Description { get; set; }
-        public string Achievement { get; set; }
-        public string ImageUrl { get; set; }
-        public Nullable<int> Status { get; set; }
+        public string TeamName { get; set; }
+        public Nullable<int> BidAmount { get; set; }
+        public Nullable<int> NextMaxBid { get; set; }
+        public Nullable<int> RemainingAmount { get; set; }
     }
 }

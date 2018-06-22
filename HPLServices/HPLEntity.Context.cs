@@ -26,6 +26,7 @@ namespace HPLServices
         }
     
         public virtual DbSet<TeamDetail> TeamDetails { get; set; }
+        public virtual DbSet<AuctionDetail> AuctionDetails { get; set; }
         public virtual DbSet<PlayerDetail> PlayerDetails { get; set; }
     }
 }
